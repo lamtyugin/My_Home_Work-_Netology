@@ -2,10 +2,10 @@ documents = [
     {'type': 'passport', 'number': '2207 876234', 'name': 'Вольтская Татьяна Анатольевна'},
     {'type': 'birth certificates', 'number': 'IIIАМ234567', 'name': 'Клепиковская Екатерина Дмитриевна'},
     {'type': 'passport', 'number': '1811 238647', 'name': 'Сотников Даниил Владимирович'},
-    {'type': 'passport', 'number': '2351 421345', 'name': 'Василий Гупкин'},
-    {'type': 'passport', 'number': '2234 834534', 'name': 'Геннадий Покемонов'},
+    {'type': 'passport', 'number': '2351 421345', 'name': 'Василий Евгеньевич Гупкин'},
+    {'type': 'passport', 'number': '2234 834534', 'name': 'Геннадий Эшович Покемонов'},
     {'type': 'birth certificates', 'number': 'IIIАМ939383', 'name': 'Захаров Андрей Вячеславович'},
-    {'type': 'birth certificates', 'number': 'IIIАМ123525', 'name': 'Симонов Евгений Алексеевич'},
+    {'type': 'birth certificates', 'number': 'IIIАМ124525', 'name': 'Симонов Евгений Алексеевич'},
     {'type': 'marriage certificates', 'number': 'IIIRМ344257', 'name': 'Соловьева Елена Анатольевна'},
     {'type': 'marriage certificates', 'number': 'IIIRМ564322', 'name': 'Перл Роман Александрович'}
 
@@ -20,21 +20,19 @@ directories = {
 
 
 def people(doc):
+    result = f' - Документ не существует.'
     for document in documents:
-        if doc == document.get('number'):
-            print(f' - {document.get("name")}')
-        else:
-            print(f' - Документ не существует')
-            break
+        if doc in document.get('number'):
+            result = f' - Владелец: {document.get("name")}'
+    print(result)
 
 
 def shelf(doc):
+    result = f' - Документ не существует.'
     for shelf_number, doc_number_ in directories.items():
         if doc in doc_number_:
-            print(f' - Полка №: {shelf_number}')
-        else:
-            print(f' - Документ не существует')
-            break
+            result = f' - Полка №: {shelf_number}'
+    print(result)
 
 
 def list_doc(documents_):
@@ -70,22 +68,22 @@ def delete(doc_number_):
 def move(doc_number_, shelf_id_):
     doc_existence = False
     if shelf_id_ not in directories:
-        return f' - Данная полка №{shelf_id_} не существует'
+        return f' - Данная полка №{shelf_id_} не существует.'
     for key, value in directories.items():
         if doc_number_ in value:
             doc_existence = True
             directories[shelf_id_] += [doc_number_]
             value.remove(doc_number_)
     if doc_existence:
-        return ' - Документ успешно перемещен'
+        return ' - Документ успешно перемещен.'
     else:
-        return ' - Документ не существует'
+        return ' - Документ не существует.'
 
 
 def as_():
     number = input(' - Введите номер новой полки: ')
     directories[number] = []
-    return f' - Полка {number} добавлена '
+    return f' - Полка №: {number} добавлена.'
 
 
 while True:
@@ -111,7 +109,7 @@ while True:
         directories_keys = []
         for key_, value_ in directories.items():
             directories_keys.append(key_)
-        shelf_id = input(f' - Введит номер полки {"; ".join(directories_keys)}: ')
+        shelf_id = input(f' - Введит номер полки: {"; ".join(directories_keys)}: ')
         print(add_doc(doc_type, doc_number, doc_owner, shelf_id))
     elif choice == 'd':
         doc_number = input(' - Введите номер документа: ')
@@ -123,7 +121,7 @@ while True:
     elif choice == 'as':
         print(as_())
     elif choice == 'q':
-        print(' - До скорой встречи !')
+        print(' - До скорой встречи!')
         break
     else:
-        print(' - Неизвестная команда попробуйте выбрать из списка')
+        print(' - Неизвестная команда, попробуйте выбрать из списка:')
