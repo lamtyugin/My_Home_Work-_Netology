@@ -45,7 +45,7 @@ def list_doc(documents_):
 
 def add_doc(doc_type_, doc_number_, doc_owner_, shelf_id_):
     if shelf_id_ not in directories:
-        return f' - Данная полка №{shelf_id_} не существует.'
+        return f' - Полка №{shelf_id_} не существует.'
     new_doc = dict(type=doc_type_, number=doc_number_, name=doc_owner_)
     documents.append(new_doc)
     directories[shelf_id_] += [doc_number_]
@@ -68,7 +68,7 @@ def delete(doc_number_):
 def move(doc_number_, shelf_id_):
     doc_existence = False
     if shelf_id_ not in directories:
-        return f' - Данная полка №{shelf_id_} не существует.'
+        return f' - Полка №{shelf_id_} не существует.'
     for key, value in directories.items():
         if doc_number_ in value:
             doc_existence = True
@@ -80,7 +80,7 @@ def move(doc_number_, shelf_id_):
         return ' - Документ не существует.'
 
 
-def as_():
+def add_shelf():
     number = input(' - Введите номер новой полки: ')
     directories[number] = []
     return f' - Полка №: {number} добавлена.'
@@ -119,7 +119,7 @@ while True:
         shelf_id = input(' - Введит номер полки, на которую хотите переместить документ: ')
         print(move(doc_number, shelf_id))
     elif choice == 'as':
-        print(as_())
+        print(add_shelf())
     elif choice == 'q':
         print(' - До скорой встречи!')
         break
