@@ -10,66 +10,70 @@ directories = {
 }
 
 
-def people(doc):
+def people():
+    doc = input(' - Введите номер документа: ')
     result = ' - Документ не существует.'
     for document in documents:
         if document["number"] == doc:
             result = f' - Владелец: {document["name"]}'
-    print(result)
+            break
+    return result
 
 
-def shelf(doc):
+def shelf():
+    doc = input(' - Введите номер документа: ')
     result = ' - Документ не существует.'
     for shelf_number, doc_number_ in directories.items():
         if doc in doc_number_:
-            return f' - Полка №: {shelf_number}'
-    print(result)
+            result = f' - Полка №: {shelf_number}'
+            break
+    return result
 
 
-def list_doc(documents_):
-    for doc in documents_:
-        print(f'{doc["type"]} "{doc["number"]}" "{doc["name"]}"')
+def list_documents():
+    for document in documents:
+        print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
 
 
 def add_doc():
-    doc_type = input(' - Введите тип документа: ')
-    doc_number = input(' - Введите номер документа: ')
-    doc_owner = input(' - Введите имя владельца документа: ')
+    document_type = input(' - Введите тип документа: ')
+    document_number = input(' - Введите номер документа: ')
+    document_owner = input(' - Введите имя владельца документа: ')
     shelf_id = input(f' - Введит номер полки: {"; ".join(directories.keys())}: ')
     if shelf_id not in directories:
         return f' - Полка №{shelf_id} не существует.'
-    new_doc = dict(type=doc_type, number=doc_number, name=doc_owner)
+    new_doc = dict(type=document_type, number=document_number, name=document_owner)
     documents.append(new_doc)
-    directories[shelf_id] += [doc_number]
+    directories[shelf_id] += [document_number]
     return ' - Документ успешно добавлен.'
 
 
 def delete():
-    doc_number = input(' - Введите номер документа: ')
+    number = input(' - Введите номер документа: ')
     initial_len = len(documents)
-    for i, d in enumerate(documents):
-        if d['number'] == doc_number:
-            documents.pop(i)
+    for key, value in enumerate(documents):
+        if value['number'] == number:
+            documents.pop(key)
     if initial_len == len(documents):
         return ' - Документ не существует.'
     for key, value in directories.items():
-        if doc_number in value:
-            value.remove(doc_number)
+        if number in value:
+            value.remove(number)
     return ' - Документ успешно удален.'
 
 
 def move():
-    doc_number = input(' - Введите номер документа, который хотите переместить: ')
+    document_number = input(' - Введите номер документа, который хотите переместить: ')
     shelf_id = input(' - Введит номер полки, на которую хотите переместить документ: ')
-    doc_existence = False
+    document_existence = False
     if shelf_id not in directories:
         return f' - Полка №{shelf_id} не существует.'
     for key, value in directories.items():
-        if doc_number in value:
-            doc_existence = True
-            directories[shelf_id] += [doc_number]
-            value.remove(doc_number)
-    if doc_existence:
+        if document_number in value:
+            document_existence = True
+            directories[shelf_id] += [document_number]
+            value.remove(document_number)
+    if document_existence:
         return ' - Документ успешно перемещен.'
     else:
         return ' - Документ не существует.'
@@ -78,7 +82,7 @@ def move():
 def add_shelf():
     number = input(' - Введите номер новой полки: ')
     if number in directories:
-        return f' - Полка с №{number} уже существует'
+        return f' - Полка №{number} уже существует'
     else:
         directories[number] = []
         return f' - Полка №: {number} добавлена.'
@@ -95,11 +99,11 @@ while True:
                    '-as: команда, которая создания новой полки\n'
                    '- q: команда, для завершение работы\n').lower()
     if choice == 'p':
-        people(input(' - Введите номер документа: '))
+        print(people())
     elif choice == 'l':
-        list_doc(documents)
+        list_documents()
     elif choice == 's':
-        shelf(str(input(' - Введите номер документа: ')))
+        print(shelf())
     elif choice == 'a':
         print(add_doc())
     elif choice == 'd':
